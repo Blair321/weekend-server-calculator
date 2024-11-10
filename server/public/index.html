@@ -10,17 +10,21 @@
     <h1>Server-Side Calculator</h1>
 
     <form data-testid="calculator">
-      <input data-testid="numOne" placeholder="First Number">
-      <button>+</button>
-      <button>-</button>
-      <button>*</button>
-      <button>/</button>
-      <input data-testid="numTwo" placeholder="Second Number">
+      <input data-testid="numOne" id = "numberOne" placeholder="First Number" type="number">
+      <button onClick="addition(event)">+</button>
+      <button onClick="subtraction(event)">-</button>
+      <button onClick="multiplication(event)">*</button>
+      <button onClick="division(event)">/</button>
+      <input data-testid="numTwo" id="numberTwo" placeholder="Second Number" type="number">
       <button>=</button>
-      <button>C</button>
+      <button onClick = "clearButton(event)">C</button>
     </form>
 
     <section data-testid="recentResult">
+      <div>Most Recent Operation:</div>
+      <ul id="mostRecentResult">
+        
+      </ul>
       <!-- The most recent calculation result goes here. -->
     </section>
 
