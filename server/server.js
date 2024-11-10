@@ -12,8 +12,13 @@ let calculations = []
 
 // Here's a wonderful place to make some routes:
 
-// GET /calculations
-
+// Get / calculations
+  app.get('/calculations', (req, res) => {
+    console.log('Touching down on /calculations')
+  
+    res.send(calculations);
+  });
+  
 // POST /calculations
 
 
