@@ -43,3 +43,33 @@ function division(event) {
 sectionView.innerHTML += `<li> ${numOne} / ${numTwo} = ${numbersDivided} </li>`
     
 }
+function getCalculations() {
+    axios({
+      method: "GET",
+      url: "/calculations",
+    })
+      .then((response) => {
+        console.log("Data From Server", response.data);
+        renderToDom(response.data); // Will only be called after we get a response.
+      })
+      .catch((error) => {
+        console.log("Oops, GET to /calculations broke!", error);
+      });
+  }
+
+
+function onReady() {
+
+const enteredValue = {
+    numOne,
+    numTwo,
+    Operator
+}
+axios.post("/calculations", enteredValue // ? Must always be an object. If you want to send something other than an object, it must be packaged inside of an object then.
+        ).then((response) => {
+
+        // TODO: Clear form
+      }).catch((error) => {
+        console.log("Oops, POST to /addquote broke: ", error)
+      })
+    }

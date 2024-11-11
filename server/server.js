@@ -44,10 +44,13 @@ else if(operator === '/'){
 let newCalculation = {
     numOne,
     numTwo,
-    operator,
-    result};
-   calculations.push(newCalculation) 
-   res.sendStatus(201)
+  operator,
+  result
+};
+co
+  calculations.push(newCalculation) 
+  console.log(res);
+  res.send(201)
 })
 // PLEASE DO NOT MODIFY ANY CODE BELOW THESE BEARS:
 // 🐻  🐻‍❄️  🧸  🐻  🐻‍❄️  🧸  🐻  🐻‍❄️  🧸  🐻  🐻‍❄️  🧸
