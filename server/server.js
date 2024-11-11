@@ -5,6 +5,9 @@ let PORT = process.env.PORT || 5001;
 app.use(express.json());
 app.use(express.static('server/public'));
 
+
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({extended:true}))
 // Global variable that will contain all of the
 // calculation objects:
 let calculations = []
@@ -19,9 +22,33 @@ let calculations = []
     res.send(calculations);
   });
   
+
 // POST /calculations
+app.post('/calculations`', (req,res) => {
 
+  const {numOne,numTwo,operator} = req.body;
+  let result;
+if (operator === '+'){
+  result = numOne + numTwo;
+}
+else if(operator === '-'){
+  result = numOne - numTwo;
+}
+else if(operator === '*'){
+  result = numOne * numTwo;
+}
+else if(operator === '/'){
+  result = numOne / numTwo;
+}
 
+let newCalculation = {
+    numOne,
+    numTwo,
+    operator,
+    result};
+   calculations.push(newCalculation) 
+   res.sendStatus(201)
+})
 // PLEASE DO NOT MODIFY ANY CODE BELOW THESE BEARS:
 // 🐻  🐻‍❄️  🧸  🐻  🐻‍❄️  🧸  🐻  🐻‍❄️  🧸  🐻  🐻‍❄️  🧸
 
