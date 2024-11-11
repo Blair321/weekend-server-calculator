@@ -24,31 +24,33 @@ let calculations = []
   
 
 // POST /calculations
-app.post('/calculations`', (req,res) => {
+app.post('/calculations', (req, res) => {
 
-  const {numOne,numTwo,operator} = req.body;
+  const { numOne, numTwo, operator } = req.body;
   let result;
-if (operator === '+'){
-  result = numOne + numTwo;
-}
-else if(operator === '-'){
-  result = numOne - numTwo;
-}
-else if(operator === '*'){
-  result = numOne * numTwo;
-}
-else if(operator === '/'){
-  result = numOne / numTwo;
-}
+  console.log(req);
 
-let newCalculation = {
+  if (operator === '+') {
+    result = numOne + numTwo;
+  }
+  else if (operator === '-') {
+    result = numOne - numTwo;
+  }
+  else if (operator === '*') {
+    result = numOne * numTwo;
+  }
+  else if (operator === '/') {
+    result = numOne / numTwo;
+  }
+
+  let newCalculation = {
     numOne,
     numTwo,
-  operator,
-  result
-};
-co
-  calculations.push(newCalculation) 
+    operator,
+    result
+  };
+  
+  calculations.push(newCalculation)
   console.log(res);
   res.send(201)
 })
