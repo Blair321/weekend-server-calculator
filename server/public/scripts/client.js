@@ -1,75 +1,105 @@
 console.log('client.js is sourced!');
 // set reset default
-function onPress(event){
-    event.preventDefault(event)
-    console.log('Prevent the default')}
+function onReady() {
+  getCalculations()
+  
+}
+onReady()
+// global variable
+let operator = '';
 // Fist lets make the functions for our operators!!
 function addition(event) {
-    let numOne = Number(document.getElementById('numberOne').value)
-    let numTwo = Number(document.getElementById('numberTwo').value)
-console.log('The Two Numbers:',numOne,numTwo);
-let numbersAdded = numOne + numTwo
-console.log('Both Numbers Addded', numbersAdded);
-const sectionView = document.getElementById('mostRecentResult')
-sectionView.innerHTML += `<li> ${numOne} + ${numTwo} = ${numbersAdded} </li>`
+   event.preventDefault();
+operator = '+';
 }
 //subtraction function 
 function subtraction(event) {
-    let numOne = Number(document.getElementById('numberOne').value)
-    let numTwo = Number(document.getElementById('numberTwo').value)
-    let numbersSubtracted = numOne - numTwo
-    console.log('Number subtracted',numbersSubtracted);
-    const sectionView = document.getElementById('mostRecentResult')
-sectionView.innerHTML += `<li> ${numOne} - ${numTwo} = ${numbersSubtracted} </li>`
-    
+  event.preventDefault();
+  operator = '-';
 }
 //multiplication function 
 function multiplication(event) {
-    let numOne = Number(document.getElementById('numberOne').value)
-    let numTwo = Number(document.getElementById('numberTwo').value) 
-    let numbersMultiplied = numOne * numTwo 
-    console.log('Multiplication', numbersMultiplied);
-     const sectionView = document.getElementById('mostRecentResult')
-sectionView.innerHTML += `<li> ${numOne} * ${numTwo} = ${numbersMultiplied} </li>`
-    
+  event.preventDefault();
+  operator = '*';
 }
 // division
 function division(event) {
-    let numOne = Number(document.getElementById('numberOne').value)
-    let numTwo = Number(document.getElementById('numberTwo').value)
-    let numbersDivided = numOne / numTwo
-    console.log('Number divided',numbersDivided);
-    const sectionView = document.getElementById('mostRecentResult')
-sectionView.innerHTML += `<li> ${numOne} / ${numTwo} = ${numbersDivided} </li>`
-    
+  event.preventDefault();
+operator = '/'
 }
+
 function getCalculations() {
     axios({
       method: "GET",
-      url: "/calculations",
-    })
+      url: "/calculations"
+  })
       .then((response) => {
-        console.log("Data From Server", response.data);
-        renderToDom(response.data); // Will only be called after we get a response.
+          console.log("Success on GET /calculations: ", response.data)
+
+          if (response.data.length > 0) {
+              render(response.data) // will render history list and recentResult
+          }
       })
       .catch((error) => {
-        console.log("Oops, GET to /calculations broke!", error);
-      });
-  }
-
-
-function onReady() {
-
-const enteredValue = {
-    numOne,
-    numTwo,
-    Operator
-}
-axios.post("/calculations", enteredValue // ? Must always be an object. If you want to send something other than an object, it must be packaged inside of an object then.
-        ).then((response) => {
-
-        // TODO: Clear form
-      }).catch((error) => {
-        console.log("Oops, POST to /addquote broke: ", error)
+          console.error("Error on GET /calculations: ", error)
       })
+  }
+function onEqual(event) {
+  event.preventDefault();
+
+  let numOne = Number(document.getElementById("numberOne").value);
+    let numTwo = Number(document.getElementById("numberTwo").value);
+
+    const enteredValue = {
+        numOne: numOne,
+        numTwo: numTwo,
+        operator: operator,
     }
+
+
+axios({
+  method: "POST",
+  url: "/calculations",
+  data: enteredValue
+})
+  .then((response) => {
+      console.log("Success with POST to /calculations")
+      // Will retrieve the latest history, which includes rendering to DOM
+      getCalculations()
+      clearButton(event)
+  })
+  .catch((error) => {
+      console.error("Error on POST /calculations: ", error)
+  })
+}
+
+  function clearButton(event) {
+    event.preventDefault()
+    console.log("clearButton() activated")
+
+    
+    document.getElementById("numberOne").value = ""
+    document.getElementById("numberTwo").value =""
+    operator = undefined
+}
+function render(history) {
+  let historyList = document.getElementById("historyList")
+  let mostRecentResult = document.getElementById("mostRecentResult")
+
+  // Replace recentResult on dom
+  mostRecentResult.innerText = history[history.length - 1].result
+
+  // Clear the history list on the DOM
+  historyList.innerHTML = ""
+
+  // Loop over all history items and append to historyList on DOM
+  for (let item of history) {
+      console.log("Current history item: ", item)
+
+      historyList.innerHTML += `
+          <li>
+              ${item.firstNum} ${item.operator} ${item.secondNum} = ${item.result}
+          </li>
+      `
+  }
+}
