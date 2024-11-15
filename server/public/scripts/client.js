@@ -98,7 +98,7 @@ function render(history) {
 
       historyList.innerHTML += `
           <li>
-              ${item.firstNum} ${item.operator} ${item.secondNum} = ${item.result}
+              ${item.numOne} ${item.operator} ${item.numTwo} = ${item.result}
           </li>
       `
   }
