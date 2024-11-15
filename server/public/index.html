@@ -11,10 +11,10 @@
 
     <form data-testid="calculator">
       <input data-testid="numOne" id = "numberOne" placeholder="First Number" type="number">
-      <button onClick="addition(event)">+</button>
-      <button onClick="subtraction(event)">-</button>
-      <button onClick="multiplication(event)">*</button>
-      <button onClick="division(event)">/</button>
+      <button onClick="addition(event,'+')">+</button>
+      <button onClick="subtraction(event,'-')">-</button>
+      <button onClick="multiplication(event,'*')">*</button>
+      <button onClick="division(event,'/')">/</button>
       <input data-testid="numTwo" id="numberTwo" placeholder="Second Number" type="number">
       <button onClick="onEqual(event)">=</button>
       <button onClick = "clearButton(event)">C</button>
@@ -29,6 +29,7 @@
     </section>
 
     <section data-testid="resultHistory">
+      <ul id="historyList"></ul>
       <!-- The list of calculation results goes here. -->
     </section>
   </body>
